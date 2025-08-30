@@ -1,13 +1,13 @@
-import { initializeApp, getApps, getApp } from "firebase/app";
-// import { getAnalytics } from "firebase/analytics";
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  GoogleAuthProvider,
-  signInWithPopup,
-} from "firebase/auth";
+import { initializeApp, getApps } from "firebase/app";
+import { getAuth } from "firebase/auth";
+// import {
+//   getAuth,
+//   createUserWithEmailAndPassword,
+//   signInWithEmailAndPassword,
+//   signOut,
+//   GoogleAuthProvider,
+//   signInWithPopup,
+// } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -18,23 +18,35 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-// Initialize Firebase
-const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-
-// ⚠️ Only call getAuth on the client
+const currentApps = getApps();
 let auth;
-if (typeof window !== "undefined") {
+
+if (!currentApps.length) {
+  const app = initializeApp(firebaseConfig);
+  auth = getAuth(app);
+} else {
+  const app = currentApps[0];
   auth = getAuth(app);
 }
-// const analytics = getAnalytics(app);
-// const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
 
-export {
-  auth,
-  provider,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  signInWithPopup,
-};
+export { auth };
+// Initialize Firebase
+// const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+
+// // ⚠️ Only call getAuth on the client
+// let auth;
+// if (typeof window !== "undefined") {
+//   auth = getAuth(app);
+// }
+// // const analytics = getAnalytics(app);
+// // const auth = getAuth(app);
+// const provider = new GoogleAuthProvider();
+
+// export {
+//   auth,
+//   provider,
+//   createUserWithEmailAndPassword,
+//   signInWithEmailAndPassword,
+//   signOut,
+//   signInWithPopup,
+// };
